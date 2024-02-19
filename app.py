@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import plotly.express as px
 
 github_url = "https://github.com/Hellojustjoe/"
 badge_url = "https://img.shields.io/badge/-hellojustjoe-black?style=flat-square&logo=github"
