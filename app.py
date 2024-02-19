@@ -1,6 +1,6 @@
 import streamlit as st
-import pandas
-import numpy
+import pandas as pd
+import numpy as np
 
 github_url = "https://github.com/Hellojustjoe/"
 badge_url = "https://img.shields.io/badge/-hellojustjoe-black?style=flat-square&logo=github"
