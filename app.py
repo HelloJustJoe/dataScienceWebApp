@@ -22,6 +22,7 @@ st.markdown(f"""
 
 st.markdown("<h4 style='text-align: center;'>Geospatial dashboard to visualize NYC Motor Vehicle Collisions - Built with Numpy, Pandas and Plotly.</h4>", unsafe_allow_html=True)
 
+@st.cache_data(persist=True)
 def load_data(nrows):
     data = pd.read_csv(dataURL, nrows=nrows, parse_dates=[['CRASH_DATE', 'CRASH_TIME']])
     data.dropna(subset=['LATITUDE', 'LONGITUDE'], inplace=True)
@@ -30,6 +31,23 @@ def load_data(nrows):
     data.rename(columns={'crash_date_crash_time': 'date/time'}, inplace=True)
     return data
 
-data_load_state = st.text('Loading data...')
 data = load_data(10000)
-data_load_state.text("Done! (using st.cache_data)")
+
+injured = data['injured_persons'].sum()
+st.markdown(f'<h5 style="text-align: center;">Total number of people injured in NYC: {injured}</h5>', unsafe_allow_html=True)
+
+st.header("Where are the most people injured in NYC?")
+injured_people = st.slider("People injured in a collision:", 0, 19)
+st.map(data.query("injured_persons >= @injured_people")[["latitude", "longitude"]].dropna(how="any"))
+
+
+st.header("How many collisions occur during a given time of day?")
+hour = st.slider('Hour:', 0, 23)
+data = data[data['date/time'].dt.hour == hour]
+
+st.markdown("Collisions between %i:00 and %i:00" % (hour, (hour+1) % 24))
+
+
+if st.checkbox("Show Raw Data", False):
+    st.subheader('Raw data')
+    st.write(data)
