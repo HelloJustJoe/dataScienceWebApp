@@ -106,6 +106,8 @@ with col2:
 
     hist = np.histogram(filtered['date/time'].dt.minute, bins=60, range=(0, 60))[0]
     chart_data = pd.DataFrame({'minute': range(60), 'crashes': hist})
+    print(chart_data.head())  # Check the first few rows
+    print(chart_data.dtypes)  # Check data types of the columns
     fig = px.bar(chart_data, x='minute', y='crashes', hover_data=['minute', 'crashes'], height=400)
     st.plotly_chart(fig, use_container_width=True)
 
