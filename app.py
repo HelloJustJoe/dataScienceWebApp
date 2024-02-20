@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import pydeck as pdk
 
 dataURL = "./data/Motor_Vehicle_Collisions_-_Crashes.csv"
 
@@ -15,7 +16,7 @@ st.markdown(f"""
         <div style="display: flex; justify-content: center; align-items: center;">
             <h1 style="margin-right: 10px;">🗽 NYC Motor Vehicle Collisions 🚗</h1>
             <a href="{github_url}">
-                <img src="{badge_url}" alt="GitHub Badge" style="height: 40px;">
+                <img src="{badge_url}" alt="GitHub Badge" style="height: 40px; border-radius: 10px;">
             </a>
         </div>
         """, unsafe_allow_html=True)
@@ -46,6 +47,28 @@ hour = st.slider('Hour:', 0, 23)
 data = data[data['date/time'].dt.hour == hour]
 
 st.markdown("Collisions between %i:00 and %i:00" % (hour, (hour+1) % 24))
+
+st.write(pdk.Deck(
+    map_style="mapbox://styles/mapbox/dark-v9",
+    initial_view_state=pdk.ViewState(
+        latitude=data['latitude'].mean(),
+        longitude=data['longitude'].mean(),
+        zoom=10,
+        pitch=50,
+    ),
+    layers=[
+        pdk.Layer(
+            'HexagonLayer',
+            data=data[['date/time', 'latitude', 'longitude']],
+            get_position=['longitude', 'latitude'],
+            radius=200,
+            elevation_scale=10,
+            elevation_range=[0, 1000],
+            pickable=True,
+            extruded=True,
+        )
+    ]
+))
 
 
 if st.checkbox("Show Raw Data", False):
