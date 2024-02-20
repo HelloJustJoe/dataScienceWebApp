@@ -25,7 +25,8 @@ st.markdown("<h4 style='text-align: center;'>Geospatial dashboard visualizing NY
 
 
 
-@st.cache_data(persist=True)
+#@st.cache_data(persist=True)
+@st.cache(persist=True, allow_output_mutation=True, show_spinner=False)
 def load_data(nrows):
     data = pd.read_csv(dataURL, nrows=nrows, parse_dates=[['CRASH_DATE', 'CRASH_TIME']])
     data.dropna(subset=['LATITUDE', 'LONGITUDE'], inplace=True)
