@@ -11,8 +11,8 @@ To run and test locally, run the below in your terminal
 
 ```
 git clone git@github.com:hellojustjoe/dataScienceWebApp.git
-pip install -r requirements.txt
-streamlit run app.py
+pip install -r dataScienceWebApp/requirements.txt
+streamlit run dataScienceWebApp/app.py
 ```
 
 To view hosted dashboard
